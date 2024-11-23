@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard {
+            text-align: center;
+            padding: 20px;
+        }
+        #logout-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard">
+            <h2>Welcome to Your Dashboard</h2>
+            <p>You are logged in as: <span id="user-email"></span></p>
+            <button id="logout-btn">Logout</button>
+        </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmW9g-9rgd-yYTv33F3ltDcuka5ZffZD0",
+            authDomain: "users-372b7.firebaseapp.com",
+            projectId: "users-372b7",
+            appId: "1:526606387265:web:YOUR_APP_ID_HERE" // Replace with your actual App ID
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Get user email
+        const userEmail = document.getElementById('user-email');
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                userEmail.textContent = user.email;
+            } else {
+                window.location.href = 'index.html'; // Redirect to login if not authenticated
+            }
+        });
+
+        // Logout functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        logoutBtn.addEventListener('click', () => {
+            firebase.auth().signOut()
+                .then(() => {
+                    console.log('User logged out');
+                    window.location.href = 'index.html'; // Redirect to login page
+                })
+                .catch((error) => {
+                    console.error('Logout error:', error.message);
+                });
+        });
+    </script>
+</body>
+</html>
